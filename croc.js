@@ -7,9 +7,6 @@ class Croc extends GameActor {
     this.img.src = "croc.png";
   }
   draw() {
-    // can delete hitbox draw when sprite in place
-    //this.context.strokeStyle = "#000000"; // hitbox
-    //this.context.strokeRect(this.x, this.y, this.width, this.height); // hitbox
     this.context.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
   update(secondsPassed) {

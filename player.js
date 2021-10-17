@@ -7,11 +7,14 @@ class Player extends GameActor {
     this.left = true;
     this.up = true;
     this.down = true;
+    this.img = new Image();
+    this.img.src = "player.png";
   }
   draw() {
     // can delete hitbox draw when sprite in place
-    this.context.fillStyle = this.isColliding ? "#ff8080" : "#ffffff"; // hitbox
-    this.context.fillRect(this.x, this.y, this.width, this.height); // hitbox
+    //this.context.fillStyle = this.isColliding ? "#ff8080" : "#ffffff"; // hitbox
+    //this.context.fillRect(this.x, this.y, this.width, this.height); // hitbox
+    this.context.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
   update(keyPress) {
     if (keyPress.right && this.right && this.x < 700) {

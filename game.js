@@ -4,9 +4,9 @@ let canvas;
 let context;
 let enemyObjects;
 let player;
-let secondsPassed = 0;
-let oldTimeStamp = 0;
-let KeyPresses = { right: false, left: false, up: false, down: false };
+let secondsPassed;
+let oldTimeStamp;
+let KeyPresses;
 let KeyHelper = { right: 39, left: 37, up: 38, down: 40 };
 
 window.onload = init;
@@ -14,6 +14,9 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 function init() {
+  KeyPresses = { right: false, left: false, up: false, down: false };
+  secondsPassed = 0;
+  oldTimeStamp = 0;
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
   createWorld();
@@ -69,6 +72,9 @@ function keyUpHandler(event) {
 }
 
 function gameLoop(timeStamp) {
+  if (player.isColliding) {
+    init();
+  }
   secondsPassed = (timeStamp - oldTimeStamp) / 1000;
   oldTimeStamp = timeStamp;
   secondsPassed = Math.min(secondsPassed, 0.1);
