@@ -15,15 +15,26 @@ function init() {
 let rectX = 0;
 let rectY = 0;
 
+let secondsPassed = 0;
+let oldTimeStamp = 0;
+let movingSpeed = 100;
+
 function gameLoop(timeStamp) {
-  update();
+  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+  oldTimeStamp = timeStamp;
+
+  update(secondsPassed);
   draw();
   window.requestAnimationFrame(gameLoop);
 }
 
-function update() {
-  rectX += 1;
-  rectY += 1;
+function update(secondsPassed) {
+  console.log(rectX, rectY);
+  rectX += movingSpeed * secondsPassed;
+  if (rectX > canvas.width) {
+    rectX = 0;
+  }
+  // rectY += movingSpeed * secondsPassed;
 }
 
 function draw() {
