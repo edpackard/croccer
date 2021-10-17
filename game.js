@@ -68,20 +68,42 @@ function gameLoop(timeStamp) {
   secondsPassed = (timeStamp - oldTimeStamp) / 1000;
   oldTimeStamp = timeStamp;
   secondsPassed = Math.min(secondsPassed, 0.1);
-
   for (let i = 0; i < enemyObjects.length; i++) {
     enemyObjects[i].update(secondsPassed);
   }
   player.update(KeyPresses);
-
+  collisionDetection();
   clearCanvas();
   background();
   for (let i = 0; i < enemyObjects.length; i++) {
     enemyObjects[i].draw();
   }
   player.draw();
-
   window.requestAnimationFrame(gameLoop);
+}
+
+function collisionDetection() {
+  let enemyObj;
+
+  for (let index = 0; index < enemyObjects.length; index++) {
+    enemyObj = enemyObjects[index];
+
+    if (rectIntersect(enemyObj, player)) {
+      console.log("boom");
+      player.isColliding = true;
+    }
+  }
+}
+
+function rectIntersect(rect1, rect2) {
+  let coll1 = rect2.x > rect1.width + rect1.x;
+  let coll2 = rect1.x > rect2.width + rect2.x;
+  let coll3 = rect2.y > rect1.height - 1 + rect1.y;
+  let coll4 = rect1.y > rect2.height - 1 + rect2.y;
+  if (coll1 || coll2 || coll3 || coll4) {
+    return false;
+  }
+  return true;
 }
 
 function clearCanvas() {
