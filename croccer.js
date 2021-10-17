@@ -27,6 +27,7 @@ function update() {
 }
 
 function draw() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
   context.strokeStyle = "#ff8080";
   context.strokeRect(rectX, rectY, 50, 50);
 }
