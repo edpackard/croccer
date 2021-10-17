@@ -12,7 +12,19 @@ function init() {
   window.requestAnimationFrame(gameLoop);
 }
 
+let secondsPassed;
+let oldTimeStamp;
+let fps;
+
 function gameLoop(timeStamp) {
+  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+  oldTimeStamp = timeStamp;
+  fps = Math.round(1 / secondsPassed);
+  context.fillStyle = "white";
+  context.fillRect(0, 0, 200, 100);
+  context.font = "25px Arial";
+  context.fillStyle = "black";
+  context.fillText("FPS: " + fps, 10, 30);
   draw();
   window.requestAnimationFrame(gameLoop);
 }
