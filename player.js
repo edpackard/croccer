@@ -9,8 +9,9 @@ class Player extends GameActor {
     this.down = true;
   }
   draw() {
-    this.context.strokeStyle = this.isColliding ? "#ff8080" : "#ffffff";
-    this.context.strokeRect(this.x, this.y, this.width, this.height);
+    // can delete hitbox draw when sprite in place
+    this.context.fillStyle = this.isColliding ? "#ff8080" : "#ffffff"; // hitbox
+    this.context.fillRect(this.x, this.y, this.width, this.height); // hitbox
   }
   update(keyPress) {
     if (keyPress.right && this.right && this.x < 700) {

@@ -23,10 +23,14 @@ function init() {
 function createWorld() {
   player = new Player(context, 350, 350, 50, 50);
   enemyObjects = [
-    new Croc(context, 0, 0, 75, 0),
-    new Croc(context, 0, 50, 50, 0),
-    new Croc(context, 300, 0, 75, 0),
-    new Croc(context, 300, 50, 50, 0),
+    new Croc(context, 200, 0, 75),
+    new Croc(context, 450, 0, 75),
+    new Croc(context, 700, 0, 75),
+    new Croc(context, 0, 50, 50),
+    new Croc(context, 250, 50, 50),
+    new Croc(context, 500, 50, 50),
+    new Croc(context, 0, 100, 100),
+    new Croc(context, 375, 100, 100),
   ];
 }
 
@@ -111,7 +115,7 @@ function clearCanvas() {
 }
 
 function background() {
-  let backgroundColor = "#0099d0";
+  let backgroundColor = "#0065ff";
   context.fillStyle = backgroundColor;
   context.fillRect(0, 0, 750, 400);
 }
