@@ -4,15 +4,18 @@ class Croc extends GameActor {
     this.width = 50;
     this.height = 50;
     this.img = new Image();
-    this.img.src = "croc.png";
+    this.img.src = vx > 0 ? "croc.png" : "croc2.png";
   }
   draw() {
-    this.context.drawImage(this.img, this.x, this.y, this.width, this.height);
+    this.context.drawImage(this.img, this.x, this.y);
   }
   update(secondsPassed) {
     this.x += this.vx * secondsPassed;
     if (this.x > 750) {
-      this.x = 0;
+      this.x = -50;
+    }
+    if (this.x < -50) {
+      this.x = 750;
     }
   }
 }

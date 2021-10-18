@@ -1,4 +1,17 @@
+body {
+  background-color: cornflowerblue;
+  font-family: "Russo One", sans-serif;
+}
+
+h1,
+h2 {
+  color: darkgreen;
+  text-align: center;
+  text-shadow: 2px 2px lightseagreen;
+}
+
 .container {
   display: flex;
   justify-content: center;
+  align-content: center;
 }

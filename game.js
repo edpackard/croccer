@@ -26,14 +26,22 @@ function init() {
 function createWorld() {
   player = new Player(context, 350, 350, 50, 50);
   enemyObjects = [
-    new Croc(context, 200, 0, 75),
-    new Croc(context, 450, 0, 75),
-    new Croc(context, 700, 0, 75),
-    new Croc(context, 0, 50, 50),
-    new Croc(context, 250, 50, 50),
-    new Croc(context, 500, 50, 50),
+    new Croc(context, 200, 0, 100),
+    new Croc(context, 450, 0, 100),
+    new Croc(context, 700, 0, 100),
+    new Croc(context, 0, 50, -75),
+    new Croc(context, 250, 50, -75),
+    new Croc(context, 500, 50, -75),
     new Croc(context, 0, 100, 100),
     new Croc(context, 375, 100, 100),
+    new Croc(context, 0, 150, -75),
+    new Croc(context, 250, 150, -75),
+    new Croc(context, 500, 150, -75),
+    new Croc(context, 150, 200, 100),
+    new Croc(context, 300, 200, 100),
+    new Croc(context, 450, 200, 100),
+    new Croc(context, 600, 200, 100),
+    new Croc(context, 750, 200, 100),
   ];
 }
 
@@ -106,8 +114,8 @@ function collisionDetection() {
 }
 
 function rectIntersect(rect1, rect2) {
-  let coll1 = rect2.x > rect1.width + rect1.x;
-  let coll2 = rect1.x > rect2.width + rect2.x;
+  let coll1 = rect2.x > rect1.width - 10 + rect1.x;
+  let coll2 = rect1.x > rect2.width - 10 + rect2.x;
   let coll3 = rect2.y > rect1.height - 1 + rect1.y;
   let coll4 = rect1.y > rect2.height - 1 + rect2.y;
   if (coll1 || coll2 || coll3 || coll4) {
