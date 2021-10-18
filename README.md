@@ -4,7 +4,7 @@ aka Croc-tober Fest II: The Snappening
 
 A simple Frogger clone using vanilla JS, and the HTML 5 canvas.
 
-No TDD here: the purpose of this project was to learn a bit more JS, especially the canvas and a simple game engine. There is still plenty of refactoring to be done with the code, and it is increasingly clear to me how I could build a simple game through a TDD approach.
+No TDD here: the purpose of this project was to learn a bit more JS, especially using the canvas and working with a simple game engine. There is still plenty of refactoring to be done with the code, and it has become increasingly clear to me how I could build a simple game through a TDD approach.
 
 This tutorial series was especially useful: https://spicyyoghurt.com/tutorials/html5-javascript-game-development/develop-a-html5-javascript-game
 
