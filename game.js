@@ -7,8 +7,20 @@ let player;
 let secondsPassed;
 let oldTimeStamp;
 let KeyPresses;
-let KeyHelper = { right: 39, left: 37, up: 38, down: 40 };
+
 let currentLevel = 1;
+let highScore = 0;
+const fast = 90;
+const slow = 35;
+const medium = 48;
+
+const KeyHelper = { right: 39, left: 37, up: 38, down: 40 };
+const leftCrocsX = [100, 367, 634];
+const leftCrocsX2 = [150, 417, 684];
+const leftCrocsY = [50, 250];
+const rightCrocsX = [0, 200, 400, 600];
+let rightCrocsY = [0, 100];
+const bonusCrocsX = [0, 133, 266, 400, 533];
 
 window.onload = init();
 
@@ -17,6 +29,7 @@ document.addEventListener("keyup", keyUpHandler, false);
 
 function init() {
   document.querySelector(`span[class='level']`).innerText = currentLevel;
+  document.querySelector(`span[class='highscore']`).innerText = highScore;
   KeyPresses = { right: false, left: false, up: false, down: false };
   secondsPassed = 0;
   oldTimeStamp = 0;
@@ -28,29 +41,37 @@ function init() {
 
 function createWorld() {
   player = new Player(context, 350, 350, 50, 50);
-  let speedBoost = currentLevel < 10 ? currentLevel * 8 : currentLevel * 12;
-  let leftCrocsX = [100, 367, 634];
-  let leftCrocsY = currentLevel < 8 ? [50, 150] : [50, 150, 250];
-  let rightCrocsX = [0, 200, 400, 600];
-  let rightCrocsY = currentLevel < 5 ? [0, 100] : [0, 100, 200];
-  let bonusCrocsX = [0, 133, 266, 400, 533, 666];
   enemyObjects = [];
-  for (const crocX of leftCrocsX) {
-    for (const crocY of leftCrocsY) {
-      let newCroc = new Croc(context, crocX, crocY, -60 - speedBoost);
-      enemyObjects.push(newCroc);
-    }
+  createCrocs();
+}
+
+function createCrocs() {
+  let speedBoost = currentLevel * 5;
+  rightCrocsY = currentLevel >= 5 ? [0, 200] : [0, 100];
+  crocRow(leftCrocsX, leftCrocsY, -fast - speedBoost);
+  crocRow(rightCrocsX, rightCrocsY, medium + speedBoost);
+  if (currentLevel >= 5) {
+    crocRow(bonusCrocsX, [100], slow + speedBoost);
   }
-  for (const crocX of rightCrocsX) {
-    for (const crocY of rightCrocsY) {
-      let newCroc = new Croc(context, crocX, crocY, 50 + speedBoost);
-      enemyObjects.push(newCroc);
-    }
+  if (currentLevel >= 8) {
+    crocRow(leftCrocsX2, [150], -medium - speedBoost);
   }
-  if (currentLevel > 15) {
-    for (const crocX of bonusCrocsX) {
-      let newCroc = new Croc(context, crocX, 300, -40 + speedBoost);
-      enemyObjects.push(newCroc);
+  if (currentLevel >= 15) {
+    crocRow(bonusCrocsX, [300], -slow + speedBoost);
+  }
+}
+
+function newCroc(x, y, speed) {
+  return new Croc(context, x, y, speed);
+}
+
+function crocRow(crocsX, crocsY, speed) {
+  let index = 0;
+  for (const crocY of crocsY) {
+    let offset = index % 2 === 0 ? 50 : 0;
+    index += 1;
+    for (const crocX of crocsX) {
+      enemyObjects.push(newCroc(crocX + offset, crocY, speed));
     }
   }
 }
@@ -114,10 +135,8 @@ function gameLoop(timeStamp) {
 
 function collisionDetection() {
   let enemyObj;
-
   for (let index = 0; index < enemyObjects.length; index++) {
     enemyObj = enemyObjects[index];
-
     if (rectIntersect(enemyObj, player)) {
       console.log("boom");
       player.isColliding = true;
@@ -154,6 +173,9 @@ function checkWin() {
 
 function gameOutcome() {
   player.draw();
-  player.hasWon ? (currentLevel += 1) : (currentLevel = 0);
+  player.hasWon ? (currentLevel += 1) : (currentLevel = 1);
+  if (currentLevel - 1 > highScore) {
+    highScore = currentLevel - 1;
+  }
   setTimeout(init, 1000);
 }

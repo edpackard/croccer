@@ -4,7 +4,8 @@ body {
 }
 
 h1,
-h2 {
+h2,
+p {
   color: darkgreen;
   text-align: center;
   text-shadow: 2px 2px lightseagreen;
