@@ -9,14 +9,18 @@ class Player extends GameActor {
     this.down = true;
     this.img = new Image();
     this.img.src = "player.png";
+    this.winImg = new Image();
+    this.winImg.src = "success.png";
+    this.deathImg = new Image();
+    this.deathImg.src = "gameover.png";
     this.hasWon = false;
   }
   draw() {
     if (this.isColliding) {
-      this.img.src = "gameover.png";
+      this.img = this.deathImg;
     }
     if (this.hasWon) {
-      this.img.src = "success.png";
+      this.img = this.winImg;
     }
     this.context.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
