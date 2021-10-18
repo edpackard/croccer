@@ -138,7 +138,6 @@ function collisionDetection() {
   for (let index = 0; index < enemyObjects.length; index++) {
     enemyObj = enemyObjects[index];
     if (rectIntersect(enemyObj, player)) {
-      console.log("boom");
       player.isColliding = true;
     }
   }
