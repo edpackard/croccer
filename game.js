@@ -8,12 +8,15 @@ let secondsPassed;
 let oldTimeStamp;
 let KeyPresses;
 let KeyHelper = { right: 39, left: 37, up: 38, down: 40 };
+let currentLevel = 0;
 
-window.onload = init;
+window.onload = init();
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 function init() {
+  document.querySelector(`span[class='level']`).innerText = currentLevel;
   KeyPresses = { right: false, left: false, up: false, down: false };
   secondsPassed = 0;
   oldTimeStamp = 0;
@@ -26,9 +29,10 @@ function init() {
 function createWorld() {
   player = new Player(context, 350, 350, 50, 50);
   enemyObjects = [
+    new Croc(context, 600, 0, 100),
+    new Croc(context, 400, 0, 100),
     new Croc(context, 200, 0, 100),
-    new Croc(context, 450, 0, 100),
-    new Croc(context, 700, 0, 100),
+    new Croc(context, 0, 0, 100),
     new Croc(context, 0, 50, -75),
     new Croc(context, 250, 50, -75),
     new Croc(context, 500, 50, -75),
@@ -80,24 +84,27 @@ function keyUpHandler(event) {
 }
 
 function gameLoop(timeStamp) {
-  if (player.isColliding) {
-    init();
+  if (player.hasWon) {
+    nextLevel();
+  } else if (player.isColliding) {
+    gameOver();
+  } else {
+    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+    oldTimeStamp = timeStamp;
+    secondsPassed = Math.min(secondsPassed, 0.1);
+    for (let i = 0; i < enemyObjects.length; i++) {
+      enemyObjects[i].update(secondsPassed);
+    }
+    player.update(KeyPresses);
+    collisionDetection();
+    clearCanvas();
+    background();
+    for (let i = 0; i < enemyObjects.length; i++) {
+      enemyObjects[i].draw();
+    }
+    player.draw();
+    window.requestAnimationFrame(gameLoop);
   }
-  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
-  oldTimeStamp = timeStamp;
-  secondsPassed = Math.min(secondsPassed, 0.1);
-  for (let i = 0; i < enemyObjects.length; i++) {
-    enemyObjects[i].update(secondsPassed);
-  }
-  player.update(KeyPresses);
-  collisionDetection();
-  clearCanvas();
-  background();
-  for (let i = 0; i < enemyObjects.length; i++) {
-    enemyObjects[i].draw();
-  }
-  player.draw();
-  window.requestAnimationFrame(gameLoop);
 }
 
 function collisionDetection() {
@@ -132,4 +139,16 @@ function background() {
   let backgroundColor = "#0065ff";
   context.fillStyle = backgroundColor;
   context.fillRect(0, 0, 750, 400);
+}
+
+function nextLevel() {
+  player.draw();
+  currentLevel += 1;
+  setTimeout(init, 1000);
+}
+
+function gameOver() {
+  player.draw();
+  currentLevel = 0;
+  setTimeout(init, 1000);
 }
