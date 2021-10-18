@@ -29,14 +29,9 @@ class Player extends GameActor {
       this.x -= this.vx;
       this.left = false;
     }
-    if (keyPress.up && this.up) {
-      if (this.y > 0) {
-        this.y -= this.vy;
-        this.up = false;
-      }
-      if (this.y <= 0) {
-        this.hasWon = true;
-      }
+    if (keyPress.up && this.up && this.y > 0) {
+      this.y -= this.vy;
+      this.up = false;
     }
     if (keyPress.down && this.down && this.y < 350) {
       this.y += this.vy;

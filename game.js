@@ -8,7 +8,7 @@ let secondsPassed;
 let oldTimeStamp;
 let KeyPresses;
 let KeyHelper = { right: 39, left: 37, up: 38, down: 40 };
-let currentLevel = 0;
+let currentLevel = 1;
 
 window.onload = init();
 
@@ -28,25 +28,31 @@ function init() {
 
 function createWorld() {
   player = new Player(context, 350, 350, 50, 50);
-  enemyObjects = [
-    new Croc(context, 600, 0, 100),
-    new Croc(context, 400, 0, 100),
-    new Croc(context, 200, 0, 100),
-    new Croc(context, 0, 0, 100),
-    new Croc(context, 0, 50, -75),
-    new Croc(context, 250, 50, -75),
-    new Croc(context, 500, 50, -75),
-    new Croc(context, 0, 100, 100),
-    new Croc(context, 375, 100, 100),
-    new Croc(context, 0, 150, -75),
-    new Croc(context, 250, 150, -75),
-    new Croc(context, 500, 150, -75),
-    new Croc(context, 150, 200, 100),
-    new Croc(context, 300, 200, 100),
-    new Croc(context, 450, 200, 100),
-    new Croc(context, 600, 200, 100),
-    new Croc(context, 750, 200, 100),
-  ];
+  let speedBoost = currentLevel < 10 ? currentLevel * 8 : currentLevel * 12;
+  let leftCrocsX = [100, 367, 634];
+  let leftCrocsY = currentLevel < 8 ? [50, 150] : [50, 150, 250];
+  let rightCrocsX = [0, 200, 400, 600];
+  let rightCrocsY = currentLevel < 5 ? [0, 100] : [0, 100, 200];
+  let bonusCrocsX = [0, 133, 266, 400, 533, 666];
+  enemyObjects = [];
+  for (const crocX of leftCrocsX) {
+    for (const crocY of leftCrocsY) {
+      let newCroc = new Croc(context, crocX, crocY, -60 - speedBoost);
+      enemyObjects.push(newCroc);
+    }
+  }
+  for (const crocX of rightCrocsX) {
+    for (const crocY of rightCrocsY) {
+      let newCroc = new Croc(context, crocX, crocY, 50 + speedBoost);
+      enemyObjects.push(newCroc);
+    }
+  }
+  if (currentLevel > 15) {
+    for (const crocX of bonusCrocsX) {
+      let newCroc = new Croc(context, crocX, 300, -40 + speedBoost);
+      enemyObjects.push(newCroc);
+    }
+  }
 }
 
 function keyDownHandler(event) {
@@ -84,10 +90,8 @@ function keyUpHandler(event) {
 }
 
 function gameLoop(timeStamp) {
-  if (player.hasWon) {
-    nextLevel();
-  } else if (player.isColliding) {
-    gameOver();
+  if (player.hasWon || player.isColliding) {
+    gameOutcome();
   } else {
     secondsPassed = (timeStamp - oldTimeStamp) / 1000;
     oldTimeStamp = timeStamp;
@@ -97,6 +101,7 @@ function gameLoop(timeStamp) {
     }
     player.update(KeyPresses);
     collisionDetection();
+    checkWin();
     clearCanvas();
     background();
     for (let i = 0; i < enemyObjects.length; i++) {
@@ -141,14 +146,14 @@ function background() {
   context.fillRect(0, 0, 750, 400);
 }
 
-function nextLevel() {
-  player.draw();
-  currentLevel += 1;
-  setTimeout(init, 1000);
+function checkWin() {
+  if (player.y === 0 && player.isColliding === false) {
+    player.hasWon = true;
+  }
 }
 
-function gameOver() {
+function gameOutcome() {
   player.draw();
-  currentLevel = 0;
+  player.hasWon ? (currentLevel += 1) : (currentLevel = 0);
   setTimeout(init, 1000);
 }
